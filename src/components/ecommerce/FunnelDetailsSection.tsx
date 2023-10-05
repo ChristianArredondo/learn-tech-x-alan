@@ -6,6 +6,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
             <h2 style={{ fontSize: 24, marginBottom: 16 }}>Funnel Details</h2>
             <Card>
                 <Empty description='Missing implementation' />
+                <p class='Hello'> Where are we going with this? </p>
             </Card>
         </section>
     );
