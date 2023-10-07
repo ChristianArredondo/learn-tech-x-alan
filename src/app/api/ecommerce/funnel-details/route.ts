@@ -8,8 +8,6 @@ export async function GET(): Promise<NextResponse> {
     const numProductViews = await commerceUserEventService.genNumRecentEventByType('product_view');
     const numCheckouts = await commerceUserEventService.genNumRecentEventByType('checkout');
     const numPurchases = await commerceUserEventService.genNumRecentEventByType('purchase');
-    // testing on the server side
-    console.log("checkouts: " + numCheckouts);
     
     return NextResponse.json({
         num_sessions: numSessions,
