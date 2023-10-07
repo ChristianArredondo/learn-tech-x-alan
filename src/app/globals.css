@@ -31,10 +31,14 @@ a {
   min-height: 1.5em; /* matches the line-height */
 }
 
-.antd-statistic.ant-statistic {
-  font-size: 14px !important;
+.funnel-footnote {
+  padding-right: 0.5rem;
+  text-align:right;
+  font-size: medium;
+  color:black;
+  line-height: 1; /* or whatever line-height you are using */
+  min-height: 1em; /* matches the line-height */
 }
-
 
 /* @media (prefers-color-scheme: dark) {
   html {

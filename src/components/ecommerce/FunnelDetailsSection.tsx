@@ -120,7 +120,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         <br></br>
                         <br></br>
                         <FunnelComponent blueIndex={8} totalHeight={200} leftHeight={heightSession} rightHeight={heightSession}/>
-                        
+                        <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
                 <Col span={6}>
@@ -132,11 +132,12 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         <p class="funnel-title">Product Views</p>
                         <div style={{color: blue[6]}}>
                             <p class="funnel-content"><NumberFormatter number={numProductViews} /></p>
-                            <p class="funnel-content">{16.5}</p>
+                            <p class="funnel-content">({(( numProductViews / numSessions) * 100).toFixed(1)}%)</p>
                         </div>
                         <br></br>
                         <br></br>
                         <FunnelComponent blueIndex={6} totalHeight={200} leftHeight={heightSession} rightHeight={heightProductViews}/>
+                        <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
                 <Col span={6}>
@@ -148,11 +149,12 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         <p class="funnel-title">Checkouts</p>
                         <div style={{color: blue[4]}}>
                             <p class="funnel-content"><NumberFormatter number={numCheckouts} /></p>
-                            <p class="funnel-content">{16.5}</p>
+                            <p class="funnel-content">({(( numCheckouts / numProductViews) * 100).toFixed(1)}%)</p>
                         </div>
                         <br></br>
                         <br></br>
                         <FunnelComponent blueIndex={4} totalHeight={200} leftHeight={heightProductViews} rightHeight={heightCheckouts}/>
+                        <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
                 <Col span={6}>
@@ -162,22 +164,14 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         bodyStyle={{ padding: 0 }}
                     >
                         <p class="funnel-title">Purchases</p>
-                        <div style={{color: blue[2]}}>
+                        <div style={{color: blue[3]}}>
                             <p class="funnel-content"><NumberFormatter number={numPurchases} /></p>
-                            <p class="funnel-content">{16.5}</p>
+                            <p class="funnel-content">({(( numPurchases / numCheckouts) * 100).toFixed(1)}%)</p>
                         </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={2} totalHeight={200} leftHeight={heightCheckouts} rightHeight={heightPurchases}/>
-                    </Card>
-                </Col>
-                <Col span={6}>
-                    <Card>
-                        <Statistic
-                            title='Purchases'
-                            value={numPurchases}
-                            precision={0}
-                        />
+                        <FunnelComponent blueIndex={3} totalHeight={200} leftHeight={heightCheckouts} rightHeight={heightPurchases}/>
+                        <p class="funnel-footnote">Net: {(( numPurchases / numSessions) * 100).toFixed(1)}%</p>
                     </Card>
                 </Col>
             </Row>
