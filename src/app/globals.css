@@ -27,6 +27,8 @@ a {
 .funnel-content {
   padding-left: 1rem;
   font-size: medium;
+  line-height: 1.5; /* or whatever line-height you are using */
+  min-height: 1.5em; /* matches the line-height */
 }
 
 .antd-statistic.ant-statistic {
