@@ -16,6 +16,24 @@ a {
   text-decoration: none;
 }
 
+/* Not sure where to put this, so put it here for now */
+.funnel-title {
+  padding-left: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color:rgba(0, 0, 0, 0.45);
+}
+
+.funnel-content {
+  padding-left: 1rem;
+  font-size: medium;
+}
+
+.antd-statistic.ant-statistic {
+  font-size: 14px !important;
+}
+
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

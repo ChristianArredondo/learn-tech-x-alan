@@ -23,8 +23,6 @@ interface FunnelProp {
   }
 // This draws a canvas of totalHeight, with a trazepoid with base leftHeight to the left
 // and top rightHeight to the right, fill to the blueIndex color
-
-// 0, total height => tH - lH / 2, th+lH/2, 
 const FunnelComponent: React.FC<FunnelProp> = ({ blueIndex, totalHeight, leftHeight, rightHeight }) => {
     const canvasRef = useRef(null);
 
@@ -45,9 +43,15 @@ const FunnelComponent: React.FC<FunnelProp> = ({ blueIndex, totalHeight, leftHei
 
     // NTS: interestingly if I add width below here, it is not defined
     return (
-        <canvas class="rect" ref={canvasRef} height={totalHeight}></canvas>
+        <canvas class="funnel" ref={canvasRef} height={totalHeight}></canvas>
     );
 }
+
+function NumberFormatter({ number }) {
+    const formattedNumber = number.toLocaleString();
+    return <div>{formattedNumber}</div>;
+}
+  
 
 export default function FunnelDetailsSection(): React.ReactNode {
     const [funnelDetails, setFunnelDetails] = useState<Props | null>(null);
@@ -57,6 +61,10 @@ export default function FunnelDetailsSection(): React.ReactNode {
     const numProductViews = funnelDetails?.numProductViews ?? 0;
     const numCheckouts = funnelDetails?.numCheckouts ?? 0;
     const numPurchases = funnelDetails?.numPurchases ?? 0;
+
+    // variables needed to draw funnel
+    //var heightSession = 0, heightProductViews = 0, heightCheckouts = 0, heightPurchases = 0;
+    
 
     useEffect(
         () => {
@@ -69,48 +77,38 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         numCheckouts: data.num_checkouts,
                         numPurchases: data.num_purchases,
                     });
+                    // we default heights to be 200, and height proportional to nums
+                    const heightSession = 200;
+                    const heightProductViews = heightSession * ( numProductViews / numSessions)    
+                    const heightCheckouts = heightProductViews * (numCheckouts / numProductViews) 
+                    const heightPurchases = heightCheckouts * (numPurchases / numCheckouts)
+                    debugger
+                    console.log(heightCheckouts,heightPurchases)
                 })
                 .finally(() => setIsLoading(false));
         },
         []
     );
-
-    /* Funnel function design
-    <Funnel {} />
-    */
-
+    
+    if (isLoading) return null;
 
     return (
         <section style={{ marginBottom: 48, padding: 16 }}>
             <h2 style={{ fontSize: 24, marginBottom: 16 }}>Funnel Details</h2>
-            {/*}    
-            <Card>
-                <Empty description='Missing implementation' />
-                <p class='Hello'> Where are we going with this? </p>
-                <li> Can you see this? </li>
-                <li> Num of Sessions: {numSessions}</li>
-                <li> Num of Views: {numProductViews}</li>
-                <li> Num of Checkouts: {numCheckouts}</li>
-                <li> Num of Purchases: {numPurchases}</li>
-            </Card>
-            */}
-
             <Row>
                 <Col span={6}>
                     <Card 
                         bordered={false} 
                         loading={isLoading}
                         bodyStyle={{ padding: 0 }}
-                    >
-                        <Statistic
-                            title='Sessions'
-                            value={numSessions}
-                            precision={0}
-                        />
-                        
+                    >            
+                        <p class="funnel-title">Sessions</p>
+                        <div style={{color: blue[8]}}>
+                            <p class="funnel-content"><NumberFormatter number={numSessions} /></p>
+                        </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={8} totalHeight={200} leftHeight={120} rightHeight={80}/>
+                        <FunnelComponent blueIndex={8} totalHeight={200} leftHeight={heightSession} rightHeight={80}/>
                         
                     </Card>
                 </Col>
@@ -120,14 +118,14 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         loading={isLoading}
                         bodyStyle={{ padding: 0 }}
                     >
-                        <Statistic
-                            title='Product Views'
-                            value={numProductViews}
-                            precision={0}
-                        />
+                        <p class="funnel-title">Product Views</p>
+                        <div style={{color: blue[6]}}>
+                            <p class="funnel-content"><NumberFormatter number={numProductViews} /></p>
+                            <p class="funnel-content">{16.5}</p>
+                        </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={6} totalHeight={200} leftHeight={80} rightHeight={40}/>
+                        <FunnelComponent blueIndex={6} totalHeight={200} leftHeight={heightSession} rightHeight={heightProductViews}/>
                     </Card>
                 </Col>
                 <Col span={6}>
@@ -136,11 +134,11 @@ export default function FunnelDetailsSection(): React.ReactNode {
                          loading={isLoading}
                          bodyStyle={{ padding: 0 }}
                     >
-                        <Statistic
-                            title='Checkouts'
-                            value={numCheckouts}
-                            precision={0}
-                        />
+                        <p class="funnel-title">Checkouts</p>
+                        <div style={{color: blue[4]}}>
+                            <p class="funnel-content"><NumberFormatter number={numCheckouts} /></p>
+                            <p class="funnel-content">{16.5}</p>
+                        </div>
                         <br></br>
                         <br></br>
                         <FunnelComponent blueIndex={4} totalHeight={200} leftHeight={40} rightHeight={30}/>
@@ -152,11 +150,11 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         loading={isLoading}
                         bodyStyle={{ padding: 0 }}
                     >
-                        <Statistic
-                            title='Purchases'
-                            value={numPurchases}
-                            precision={0}
-                        />
+                        <p class="funnel-title">Purchases</p>
+                        <div style={{color: blue[2]}}>
+                            <p class="funnel-content"><NumberFormatter number={numPurchases} /></p>
+                            <p class="funnel-content">{16.5}</p>
+                        </div>
                         <br></br>
                         <br></br>
                         <FunnelComponent blueIndex={2} totalHeight={200} leftHeight={30} rightHeight={10}/>
