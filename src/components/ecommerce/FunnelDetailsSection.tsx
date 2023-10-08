@@ -2,12 +2,6 @@ import { Row, Col, Card, Statistic, Empty } from 'antd';
 import { useEffect, useState, useRef } from 'react';
 import { blue } from "@ant-design/colors";
 
-/*
-        num_sessions: numSessions,
-        num_checkouts: numCheckouts,
-        num_product_views: numProductViews,
-        num_purchases: numPurchases
-*/
 interface Props {
     numSessions: number;
     numProductViews: number;
@@ -22,7 +16,7 @@ interface FunnelProp {
     rightHeight: number;
   }
 // This draws a canvas of totalHeight, with a trazepoid with base leftHeight to the left
-// and top rightHeight to the right, fill to the blueIndex color
+// and top rightHeight to the right, fill to the blueIndex color, i.e. blue[4] per Antd Color design pattern
 const FunnelComponent: React.FC<FunnelProp> = ({ blueIndex, totalHeight, leftHeight, rightHeight }) => {
     const canvasRef = useRef(null);
 
@@ -47,6 +41,7 @@ const FunnelComponent: React.FC<FunnelProp> = ({ blueIndex, totalHeight, leftHei
     );
 }
 
+// This turns number 1183 to '1,183', LocaleString
 function NumberFormatter({ number }) {
     const formattedNumber = number.toLocaleString();
     return <div>{formattedNumber}</div>;
@@ -62,10 +57,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
     const numCheckouts = funnelDetails?.numCheckouts ?? 0;
     const numPurchases = funnelDetails?.numPurchases ?? 0;
 
-    // variables needed to draw funnel
-    //var heightSession = 0, heightProductViews = 0, heightCheckouts = 0, heightPurchases = 0;
-    
-
+    // async call to fetch funel details from DB
     useEffect(
         () => {
             fetch('/api/ecommerce/funnel-details', { cache: 'no-cache' })
@@ -77,15 +69,6 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         numCheckouts: data.num_checkouts,
                         numPurchases: data.num_purchases,
                     });
-                    // we default heights to be 200, and height proportional to nums
-                    /*
-                    const heightSession = 200;
-                    const heightProductViews = heightSession * ( numProductViews / numSessions)    
-                    const heightCheckouts = heightProductViews * (numCheckouts / numProductViews) 
-                    const heightPurchases = heightCheckouts * (numPurchases / numCheckouts)
-                    debugger
-                    console.log(heightCheckouts,heightPurchases)
-                    */
                 })
                 .finally(() => setIsLoading(false));
         },
@@ -97,7 +80,8 @@ export default function FunnelDetailsSection(): React.ReactNode {
     }
   
     // calculate heights of funnel sections
-    const heightSession = 200;
+    const heightTotal = 200; // set entire funnel height
+    const heightSession = heightTotal; 
     const heightProductViews = heightSession * (numProductViews / numSessions);
     const heightCheckouts = heightProductViews * (numCheckouts / numProductViews);
     const heightPurchases = heightCheckouts * (numPurchases / numCheckouts);
@@ -119,7 +103,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={8} totalHeight={200} leftHeight={heightSession} rightHeight={heightSession}/>
+                        <FunnelComponent blueIndex={8} totalHeight={heightTotal} leftHeight={heightSession} rightHeight={heightSession}/>
                         <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
@@ -136,7 +120,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={6} totalHeight={200} leftHeight={heightSession} rightHeight={heightProductViews}/>
+                        <FunnelComponent blueIndex={6} totalHeight={heightTotal} leftHeight={heightSession} rightHeight={heightProductViews}/>
                         <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
@@ -153,7 +137,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={4} totalHeight={200} leftHeight={heightProductViews} rightHeight={heightCheckouts}/>
+                        <FunnelComponent blueIndex={4} totalHeight={heightTotal} leftHeight={heightProductViews} rightHeight={heightCheckouts}/>
                         <p class="funnel-footnote"></p>
                     </Card>
                 </Col>
@@ -170,7 +154,7 @@ export default function FunnelDetailsSection(): React.ReactNode {
                         </div>
                         <br></br>
                         <br></br>
-                        <FunnelComponent blueIndex={3} totalHeight={200} leftHeight={heightCheckouts} rightHeight={heightPurchases}/>
+                        <FunnelComponent blueIndex={3} totalHeight={heightTotal} leftHeight={heightCheckouts} rightHeight={heightPurchases}/>
                         <p class="funnel-footnote">Net: {(( numPurchases / numSessions) * 100).toFixed(1)}%</p>
                     </Card>
                 </Col>
