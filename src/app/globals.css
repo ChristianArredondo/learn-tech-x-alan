@@ -16,6 +16,30 @@ a {
   text-decoration: none;
 }
 
+/* Not sure where to put this, so put it here for now */
+.funnel-title {
+  padding-left: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color:rgba(0, 0, 0, 0.45);
+}
+
+.funnel-content {
+  padding-left: 1rem;
+  font-size: medium;
+  line-height: 1.5; /* or whatever line-height you are using */
+  min-height: 1.5em; /* matches the line-height */
+}
+
+.funnel-footnote {
+  padding-right: 0.5rem;
+  text-align:right;
+  font-size: medium;
+  color:black;
+  line-height: 1; /* or whatever line-height you are using */
+  min-height: 1em; /* matches the line-height */
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
